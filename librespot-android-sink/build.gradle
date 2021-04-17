@@ -31,3 +31,31 @@ android {
 dependencies {
     api 'xyz.gianlu.librespot:librespot-sink-api:1.5.6-SNAPSHOT'
 }
+
+// Because the components are created only during the afterEvaluate phase, you must
+// configure your publications using the afterEvaluate() lifecycle method.
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                // Applies the component for the release build variant.
+                from components.release
+
+                // You can then customize attributes of the publication as shown below.
+                groupId = 'xyz.gianlu.librespot'
+                artifactId = 'librespot-android-sink'
+                version = '0.1'
+            }
+            // Creates a Maven publication called “debug”.
+            debug(MavenPublication) {
+                // Applies the component for the debug build variant.
+                from components.debug
+
+                groupId = 'com.example.MyLibrary'
+                artifactId = 'librespot-android-sink-debug'
+                version = '0.1'
+            }
+        }
+    }
+}
